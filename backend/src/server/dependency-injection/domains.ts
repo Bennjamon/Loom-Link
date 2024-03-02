@@ -1,4 +1,4 @@
-import LinkDomain from "../../link/Link.domain";
+import LinkDomain from "../../link/domain/Link.domain";
 import SharedDomain from "../../shared/domain/Shared.domain";
 import { Constructor } from "../../shared/types/Constructor";
 import BackendApplication from "../App";
