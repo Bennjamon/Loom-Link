@@ -27,6 +27,8 @@ export default class MongoDataSource<T extends Entity>
   }
 
   async create(data: T): Promise<void> {
+    data.preSave();
+
     await this.collection.insertOne(data as OptionalUnlessRequiredId<T>);
   }
 
