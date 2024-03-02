@@ -1,0 +1,14 @@
+{
+  "name": "loom-link",
+  "scripts": {
+    "dev": "concurrently -k \"npm run dev -w web\" \"npm run dev -w backend\"",
+    "production": "npm run build -w web && npm run production -w backend"
+  },
+  "workspaces": [
+    "./backend",
+    "./web"
+  ],
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
