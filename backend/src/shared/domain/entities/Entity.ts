@@ -1,7 +1,7 @@
 import { v4 } from "uuid";
 import { Constructor } from "../../types/Constructor";
 import { CreateResult } from "../../types/CreateResult";
-import { InvalidArgumemtdError } from "../../errors/RequestError";
+import { InvalidArgumemtError } from "../../errors/RequestError";
 
 export default class Entity {
   public id!: string;
@@ -41,7 +41,7 @@ export default class Entity {
       const value = this[field as keyof this];
 
       if (value === undefined || null) {
-        throw new InvalidArgumemtdError(`${field} is required`);
+        throw new InvalidArgumemtError(`${field} is required`);
       }
     });
   }
