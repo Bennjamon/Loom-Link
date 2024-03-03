@@ -16,4 +16,12 @@ export default class UserSessionService {
 
     return session;
   }
+
+  public async getAllUserSessions(userID: string): Promise<UserSession[]> {
+    const sessions = await this.userSessionRepository.getAllUserSessions({
+      userID,
+    });
+
+    return sessions.map((session) => UserSession.create(session));
+  }
 }

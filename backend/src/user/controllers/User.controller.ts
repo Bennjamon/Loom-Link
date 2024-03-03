@@ -11,7 +11,7 @@ export default class UserController {
     private readonly userSessionService: UserSessionService,
   ) {}
 
-  @Get("/") public async getUser(req: Request, res: Response) {
+  @Get("/") public async getUser(req: Request, res: Response): Promise<void> {
     const sessionID = req.headers.authorization || "";
 
     const session = await this.userSessionService.getUserSessionByID(sessionID);
@@ -20,6 +20,17 @@ export default class UserController {
 
     res.send({
       user: user.getInfo(),
+    });
+  }
+
+  @Get("/sessions")
+  public async getUserSessions(req: Request, res: Response) {
+    const { _user } = req;
+
+    const sessions = await this.userSessionService.getAllUserSessions(_user.id);
+
+    res.send({
+      sessions: sessions.map((session) => session.getInfo()),
     });
   }
 }
