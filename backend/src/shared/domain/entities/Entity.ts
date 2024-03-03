@@ -1,7 +1,8 @@
+import { omit } from "lodash";
 import { v4 } from "uuid";
 import { Constructor } from "../../types/Constructor";
 import { CreateResult } from "../../types/CreateResult";
-import { InvalidArgumemtError } from "../../errors/RequestError";
+import { InvalidArgumentError } from "../../errors/RequestError";
 
 export default class Entity {
   public id!: string;
@@ -41,7 +42,7 @@ export default class Entity {
       const value = this[field as keyof this];
 
       if (value === undefined || null) {
-        throw new InvalidArgumemtError(`${field} is required`);
+        throw new InvalidArgumentError(`${field} is required`);
       }
     });
   }
@@ -54,5 +55,13 @@ export default class Entity {
       basePreSave.apply(this);
       thisPreSave.apply(this);
     };
+  }
+
+  protected getPrivateFields(): string[] {
+    return [];
+  }
+
+  public getInfo(): Partial<this> {
+    return omit(this, this.getPrivateFields());
   }
 }

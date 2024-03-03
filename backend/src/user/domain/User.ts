@@ -16,4 +16,8 @@ export default class User extends Entity {
   public preSave(): void {
     this.password = hashSync(this.password, User.PASSWORD_HASH_SALT_ROUNDS);
   }
+
+  protected getPrivateFields(): string[] {
+    return ["password"];
+  }
 }

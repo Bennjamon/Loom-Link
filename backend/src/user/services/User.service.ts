@@ -4,7 +4,7 @@ import User from "../domain/User";
 import UserRepository from "../repositories/User.repository";
 
 @Service()
-export default class UserSservice {
+export default class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   public async getUserByID(id: string): Promise<User> {
