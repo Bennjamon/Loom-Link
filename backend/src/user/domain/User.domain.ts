@@ -1,5 +1,8 @@
 import Domain from "../../shared/decorators/Domain";
 import MongoDataSource from "../../shared/infrastructure/data-source/MongoDataSource";
+import UserController from "../controllers/User.controller";
+import UserRepository from "../repositories/User.repository";
+import UserService from "../services/User.service";
 
 @Domain({
   dependencies: [
@@ -13,6 +16,9 @@ import MongoDataSource from "../../shared/infrastructure/data-source/MongoDataSo
       class: MongoDataSource,
       args: ["user_sessions"],
     },
+    UserRepository,
+    UserService,
   ],
+  controllers: [UserController],
 })
 export default class UserDomain {}
