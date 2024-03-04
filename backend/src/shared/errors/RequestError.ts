@@ -30,9 +30,15 @@ export class BadRequestError extends RequestError {
   }
 }
 
-export class InvalidArgumemtdError extends RequestError {
+export class InvalidArgumentError extends RequestError {
   constructor(message: string = "Invalid argument") {
     super(message, 422);
+  }
+}
+
+export class UnauthorizedError extends RequestError {
+  constructor(message: string = "Unauthorized") {
+    super(message, 401);
   }
 }
 

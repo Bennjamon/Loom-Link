@@ -1,7 +1,12 @@
+import { omit } from "lodash";
+import { v4 } from "uuid";
 import { Constructor } from "../../types/Constructor";
 import { CreateResult } from "../../types/CreateResult";
+import { InvalidArgumentError } from "../../errors/RequestError";
 
 export default class Entity {
+  public id!: string;
+
   public static create<T, V extends Partial<T> | null>(
     this: Constructor<T>,
     data: V,
@@ -15,5 +20,48 @@ export default class Entity {
     });
 
     return instance as CreateResult<T, V>;
+  }
+
+  constructor() {
+    this.overridePreSave();
+  }
+
+  public preSave(): void {
+    this.id ||= v4();
+    this.checkHasRequiredFields();
+  }
+
+  protected getRequiredFields(): string[] {
+    return Object.keys(this);
+  }
+
+  private checkHasRequiredFields(): void {
+    const requiredFields = this.getRequiredFields();
+
+    requiredFields.forEach((field) => {
+      const value = this[field as keyof this];
+
+      if (value === undefined || null) {
+        throw new InvalidArgumentError(`${field} is required`);
+      }
+    });
+  }
+
+  private overridePreSave(): void {
+    const { preSave: thisPreSave } = this;
+    const basePreSave = Entity.prototype.preSave;
+
+    this.preSave = function preSave() {
+      basePreSave.apply(this);
+      thisPreSave.apply(this);
+    };
+  }
+
+  protected getPrivateFields(): string[] {
+    return [];
+  }
+
+  public getInfo(): Partial<this> {
+    return omit(this, this.getPrivateFields());
   }
 }
