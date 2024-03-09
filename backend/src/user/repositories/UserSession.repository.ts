@@ -22,4 +22,23 @@ export default class UserSessionRepository {
 
     return UserSession.create(session);
   }
+
+  public async getOneUserSession(
+    filter: Filter<UserSession>,
+  ): Promise<UserSession | null> {
+    const session = await this.userSessionDataSource.getOne(filter);
+
+    return UserSession.create(session);
+  }
+
+  public async createUserSession(data: UserSession): Promise<void> {
+    this.userSessionDataSource.create(data);
+  }
+
+  public async updateUserSession(
+    id: string,
+    data: Partial<UserSession>,
+  ): Promise<UserSession> {
+    return this.userSessionDataSource.update(id, data);
+  }
 }

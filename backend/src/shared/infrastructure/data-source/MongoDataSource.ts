@@ -2,6 +2,7 @@ import { Collection, Db, Filter, OptionalUnlessRequiredId } from "mongodb";
 import Container from "../../../server/dependency-injection/Container";
 import Entity from "../../domain/entities/Entity";
 import { DataSource } from "../../types/DataSource";
+import { Filter as CustomFilter } from "../../types/Filter";
 
 export default class MongoDataSource<T extends Entity>
   implements DataSource<T>
@@ -14,10 +15,14 @@ export default class MongoDataSource<T extends Entity>
     this.collection = database.collection<T>(collectionName);
   }
 
-  public async getAll(): Promise<T[]> {
-    const operation = this.collection.find();
+  public async getAll(filter: CustomFilter<T>): Promise<T[]> {
+    const operation = this.collection.find(filter as Filter<T>);
 
     return operation.toArray() as unknown as T[];
+  }
+
+  public async getOne(filter: CustomFilter<T>): Promise<T | null> {
+    return this.collection.findOne(filter as Filter<T>) as unknown as T | null;
   }
 
   public async getByID(id: string): Promise<T | null> {
@@ -32,10 +37,12 @@ export default class MongoDataSource<T extends Entity>
     await this.collection.insertOne(data as OptionalUnlessRequiredId<T>);
   }
 
-  async update(id: string, data: Partial<T>): Promise<void> {
+  async update(id: string, data: Partial<T>): Promise<T> {
     const filter = { id } as unknown as Filter<T>;
 
-    await this.collection.updateOne(filter, data);
+    const result = await this.collection.findOneAndUpdate(filter, data);
+
+    return result as T;
   }
 
   async delete(id: string): Promise<void> {

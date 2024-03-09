@@ -6,7 +6,7 @@ export default class UserSession extends Entity {
     public readonly ip: string,
     public readonly userAgent: string,
     public readonly userID: string,
-    public readonly expiredAt: string,
+    public readonly expiredAt: number,
   ) {
     super();
   }

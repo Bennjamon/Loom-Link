@@ -1,4 +1,4 @@
-import { hashSync } from "bcrypt";
+import { compareSync, hashSync } from "bcrypt";
 import Entity from "../../shared/domain/entities/Entity";
 
 export default class User extends Entity {
@@ -15,6 +15,10 @@ export default class User extends Entity {
 
   public preSave(): void {
     this.password = hashSync(this.password, User.PASSWORD_HASH_SALT_ROUNDS);
+  }
+
+  public checkPassword(password: string): boolean {
+    return compareSync(password, this.password);
   }
 
   protected getPrivateFields(): string[] {
