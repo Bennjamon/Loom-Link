@@ -87,11 +87,16 @@ export default class Server {
 
           router[route.method](
             route.path.replace(/\/$/, ""),
+            ...controllerData.middlewares,
             handler.bind(instance),
           );
         });
 
-        apiRouter.use(controllerData.path, router);
+        apiRouter.use(
+          controllerData.path,
+          ...controllerData.middlewares,
+          router,
+        );
       });
     });
 

@@ -19,7 +19,7 @@ export default class AuthService {
   ): Promise<UserSession> {
     const user = await this.userRepository.getOneUser({ name });
 
-    if (!user || user.checkPassword(password)) {
+    if (!user || !user.checkPassword(password)) {
       throw new UnauthorizedError("INVALID_CREDENTIALS");
     }
 
