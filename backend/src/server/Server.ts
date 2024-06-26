@@ -15,6 +15,7 @@ import getToken from "../shared/utils/getToken";
 import getControllerData from "../shared/utils/getControllerData";
 import { NotFoundError } from "../shared/errors/RequestError";
 import parseError from "../shared/utils/parseError";
+import parseMiddlewares from "./utils/parseMiddlewares";
 
 export default class Server {
   private app: Express;
@@ -87,14 +88,14 @@ export default class Server {
 
           router[route.method](
             route.path.replace(/\/$/, ""),
-            ...controllerData.middlewares,
+            ...parseMiddlewares(route.middlewares),
             handler.bind(instance),
           );
         });
 
         apiRouter.use(
           controllerData.path,
-          ...controllerData.middlewares,
+          ...parseMiddlewares(controllerData.middlewares),
           router,
         );
       });

@@ -3,6 +3,7 @@ import Controller from "../../shared/decorators/Controller";
 import { Get } from "../../shared/decorators/HandlerDecorators";
 import UserService from "../services/User.service";
 import UserSessionService from "../services/UserSession.service";
+import VerifyAuth from "../../auth/middlewares/VerifyAuth";
 
 @Controller("/users")
 export default class UserController {
@@ -11,21 +12,17 @@ export default class UserController {
     private readonly userSessionService: UserSessionService,
   ) {}
 
-  @Get("/") public async getUser(req: Request, res: Response): Promise<void> {
-    const sessionID = req.headers.authorization || "";
-
-    const session = await this.userSessionService.getUserSessionByID(sessionID);
-
-    const user = await this.userService.getUserByID(session.userID);
+  @Get("/", VerifyAuth) public getUser(req: Request, res: Response): void {
+    const { user } = req;
 
     res.send({
       user: user.getInfo(),
     });
   }
 
-  @Get("/sessions")
+  @Get("/sessions", VerifyAuth)
   public async getUserSessions(req: Request, res: Response) {
-    const { _user } = req;
+    const { user: _user } = req;
 
     const sessions = await this.userSessionService.getAllUserSessions(_user.id);
 

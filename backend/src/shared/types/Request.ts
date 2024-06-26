@@ -5,8 +5,8 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     export interface Request {
-      _user: User;
-      _userSession: UserSession;
+      user: User;
+      userSession: UserSession;
     }
   }
 }

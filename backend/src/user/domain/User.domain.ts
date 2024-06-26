@@ -2,7 +2,9 @@ import Domain from "../../shared/decorators/Domain";
 import MongoDataSource from "../../shared/infrastructure/data-source/MongoDataSource";
 import UserController from "../controllers/User.controller";
 import UserRepository from "../repositories/User.repository";
+import UserSessionRepository from "../repositories/UserSession.repository";
 import UserService from "../services/User.service";
+import UserSessionService from "../services/UserSession.service";
 
 @Domain({
   dependencies: [
@@ -16,7 +18,10 @@ import UserService from "../services/User.service";
       class: MongoDataSource,
       args: ["user_sessions"],
     },
+    UserSessionRepository,
     UserRepository,
+    UserService,
+    UserSessionService,
     UserService,
   ],
   controllers: [UserController],
