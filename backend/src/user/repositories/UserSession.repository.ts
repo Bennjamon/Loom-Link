@@ -41,4 +41,8 @@ export default class UserSessionRepository {
   ): Promise<UserSession> {
     return this.userSessionDataSource.update(id, data);
   }
+
+  public async deleteUserSeesion(sessionID: string): Promise<void> {
+    return this.userSessionDataSource.delete(sessionID);
+  }
 }

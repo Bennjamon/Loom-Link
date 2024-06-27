@@ -1,5 +1,6 @@
 import Service from "../../shared/decorators/Service";
 import { UnauthorizedError } from "../../shared/errors/RequestError";
+import User from "../../user/domain/User";
 import UserSession from "../../user/domain/UserSession";
 import UserRepository from "../../user/repositories/User.repository";
 import UserSessionRepository from "../../user/repositories/UserSession.repository";
@@ -45,5 +46,18 @@ export default class AuthService {
     await this.userSessionRepository.createUserSession(newSession);
 
     return newSession;
+  }
+
+  public async logout(user: User, sessionID: string): Promise<void> {
+    const session = await this.userSessionRepository.getOneUserSession({
+      id: sessionID,
+      userID: user.id,
+    });
+
+    if (!session) {
+      throw new UnauthorizedError("INVALID_SESSION");
+    }
+
+    await this.userSessionRepository.deleteUserSeesion(sessionID);
   }
 }
