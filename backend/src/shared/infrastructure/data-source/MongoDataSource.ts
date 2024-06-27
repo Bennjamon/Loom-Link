@@ -39,8 +39,9 @@ export default class MongoDataSource<T extends Entity>
 
   async update(id: string, data: Partial<T>): Promise<T> {
     const filter = { id } as unknown as Filter<T>;
+    const updateData = { $set: data };
 
-    const result = await this.collection.findOneAndUpdate(filter, data);
+    const result = await this.collection.findOneAndUpdate(filter, updateData);
 
     return result as T;
   }

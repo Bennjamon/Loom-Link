@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import Controller from "../../shared/decorators/Controller";
-import { Get } from "../../shared/decorators/HandlerDecorators";
+import { Get, Post } from "../../shared/decorators/HandlerDecorators";
 import UserService from "../services/User.service";
 import UserSessionService from "../services/UserSession.service";
 import VerifyAuth from "../../auth/middlewares/VerifyAuth";
+import User from "../domain/User";
 
 @Controller("/users")
 export default class UserController {
@@ -28,6 +29,17 @@ export default class UserController {
 
     res.send({
       sessions: sessions.map((session) => session.getInfo()),
+    });
+  }
+
+  @Post("/create")
+  public async createUser(req: Request, res: Response): Promise<void> {
+    const userData = req.body as Partial<User>;
+
+    const user = await this.userService.createUser(userData);
+
+    res.send({
+      user: user.getInfo(),
     });
   }
 }

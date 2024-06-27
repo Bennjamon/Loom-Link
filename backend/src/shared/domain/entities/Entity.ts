@@ -58,10 +58,14 @@ export default class Entity {
   }
 
   protected getPrivateFields(): string[] {
-    return [];
+    return ["_id"];
   }
 
   public getInfo(): Partial<this> {
-    return omit(this, this.getPrivateFields());
+    const privateFields = this.getPrivateFields().concat(
+      Entity.prototype.getPrivateFields.call(this),
+    );
+
+    return omit(this, privateFields);
   }
 }

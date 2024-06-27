@@ -14,4 +14,10 @@ export default class UserService {
 
     return user;
   }
+
+  public async createUser(userData: Partial<User>): Promise<User> {
+    const user = await this.userRepository.createUser(userData);
+
+    return user;
+  }
 }

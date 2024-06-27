@@ -22,6 +22,6 @@ export default class UserSessionService {
       userID,
     });
 
-    return sessions.map((session) => UserSession.create(session));
+    return sessions;
   }
 }

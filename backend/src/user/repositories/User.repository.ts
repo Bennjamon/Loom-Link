@@ -20,4 +20,12 @@ export default class UserRepository {
 
     return User.create(user);
   }
+
+  public async createUser(userData: Partial<User>): Promise<User> {
+    const user = User.create(userData);
+
+    await this.userDataSource.create(user);
+
+    return user;
+  }
 }
