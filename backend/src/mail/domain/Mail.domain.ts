@@ -1,4 +1,7 @@
 import Domain from "../../shared/decorators/Domain";
+import MailService from "../services/Mail.service";
 
-@Domain({})
+@Domain({
+  dependencies: [MailService],
+})
 export default class MailDomain {}

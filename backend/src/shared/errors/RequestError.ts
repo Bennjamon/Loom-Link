@@ -43,7 +43,7 @@ export class UnauthorizedError extends RequestError {
 }
 
 export class ServerError extends RequestError {
-  constructor() {
-    super("Internal server error", 500);
+  constructor(message: string = "Internal server error") {
+    super(message, 500);
   }
 }
