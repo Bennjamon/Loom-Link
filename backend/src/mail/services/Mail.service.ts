@@ -1,4 +1,3 @@
-import { ServerError } from "../../shared/errors/RequestError";
 import Mail from "../types/Mail";
 import Mailer from "../types/Mailer";
 
@@ -17,9 +16,7 @@ export default class MailService {
 
       message ||= `${error}`;
 
-      throw new ServerError(
-        `Error while initiatilizing mail service: ${message}`,
-      );
+      throw new Error(`Error while initiatilizing mail service: ${message}`);
     }
   }
 
@@ -35,7 +32,7 @@ export default class MailService {
 
       message ||= `${error}`;
 
-      throw new ServerError(`Error while sending mail: ${message}`);
+      throw new Error(`Error while sending mail: ${message}`);
     }
   }
 }
