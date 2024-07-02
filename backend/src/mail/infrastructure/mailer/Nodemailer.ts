@@ -2,11 +2,15 @@ import { Transporter, createTestAccount, createTransport } from "nodemailer";
 import AuthConfigService from "../../services/AuthConfigService";
 import Mail from "../../types/Mail";
 import Mailer from "../../types/Mailer";
+import Inject from "../../../shared/decorators/Inject";
 
 export default class NodemailerImplementaion implements Mailer {
   private transporter?: Transporter;
 
-  constructor(private readonly authConfigService: AuthConfigService) {}
+  constructor(
+    @Inject(AuthConfigService)
+    private readonly authConfigService: AuthConfigService,
+  ) {}
 
   async setup(): Promise<void> {
     const env = this.authConfigService.get("env");
