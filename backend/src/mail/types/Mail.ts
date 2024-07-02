@@ -1,0 +1,6 @@
+export default interface Mail {
+  from: string;
+  to: string;
+  subject: string;
+  content: string;
+}
